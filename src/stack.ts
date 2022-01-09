@@ -58,21 +58,29 @@ function tagIt(scope: Construct) {
   const tags = Tags.of(scope);
 
   // Resolve values
-  const accountType = ProjectContext.getAccountType(scope);
+  const accountType = ProjectContext.getAccountType(scope); // TODO allow fail (tryGet...)
   const environmentType = ProjectContext.tryGetEnvironment(scope);
   const projectName = ProjectContext.getName(scope);
   const authorName = ProjectContext.getAuthorName(scope);
   const authorOrganization = ProjectContext.getAuthorOrganization(scope);
   const authorEmail = ProjectContext.getAuthorEmail(scope);
 
+  const useLegacyStacks = scope.node.tryGetContext('@almamedia-open-source/cdk-project-stack:legacyTags') === true;
+
 
   tags.add('Account', accountType);
   if (typeof environmentType === 'string') {
     tags.add('Environment', environmentType);
-    tags.add('ProjectAndEnvironment', `${pascalCase(projectName)}${pascalCase(environmentType)}`);
+    if (useLegacyStacks) {
+      tags.add('ProjectAndEnvironment', `${pascalCase(projectName)}${pascalCase(environmentType)}`);
+    }
   }
 
-  tags.add('Project', capitalCase(projectName));
+  if (useLegacyStacks) {
+    tags.add('Project', capitalCase(projectName));
+  } else {
+    tags.add('Project', projectName);
+  }
   tags.add('Author', authorName);
   tags.add('Organization', authorOrganization || '');
   tags.add('Contact', authorEmail || '');
