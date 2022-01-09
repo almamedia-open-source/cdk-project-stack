@@ -142,6 +142,8 @@ new MyStack(project, 'MyExampleStack');
 
 ### Stack Name
 
+The construct ID given to stack instance is used as a "base name" (e.g. `MyExampleStack`) for the stack:
+
 |     Runtime Context via CLI     |                       Value                        |
 | :------------------------------ | :------------------------------------------------- |
 | `-c account=dev -c env=staging` | `MyCoolProject-Environment-Staging-MyExampleStack` |
