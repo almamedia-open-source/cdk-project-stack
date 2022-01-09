@@ -3,9 +3,13 @@
 ![CDK Version](https://img.shields.io/badge/CDK-v2-informational "CDK v2")
 ![Stability](https://img.shields.io/badge/Stability-Experimental-yellow "Stability: Experimental")
 
-**Opinionated AWS CDK construct to define CloudFormation Stacks with sensible defaults.**
+**Opinionated AWS CDK construct to define CloudFormation Stacks with sensible defaults and tags.**
 
 TODO
+
+- Tags all resources
+- Defines Stack termination protection
+- Sets the CDK environment (account ID & region)
 
 <br/>
 
@@ -93,15 +97,34 @@ _Breaking changes may occur at any given time without prior warning before first
     ```ts
     // bin/app.ts
 
-    new MyStack(project, 'MyStack');
+    new MyStack(project, 'MyExampleStack');
     ```
 
 4. Run CDK commands with (optional) `environment-type` (or shorthand: `environment` or `env`) CLI context flag, for example:
     ```shell
-    npx cdk deploy --context environment=feature/foo-bar
+    npx cdk deploy --context account=dev --context environment=staging
     ```
 
-5. TODO
+5. Resulting Stack properties
+
+    |        Property         |                    Example value                     |
+    | :---------------------- | :--------------------------------------------------- |
+    | `stackName`             | `"MyCoolProject-Environment-Staging-MyExampleStack"` |
+    | `terminationProtection` | `true`                                               |
+    | `env.account`           | `"111111111111"`                                     |
+    | `env.region`            | `"eu-west-1"`                                        |
+
+6. Resulting Tags for the Stack and its resources
+
+    |        Property         |           Example value           |
+    | :---------------------- | :-------------------------------- |
+    | `Account`               | `dev`                             |
+    | `Environment`           | `staging`                         |
+    | `ProjectAndEnvironment` | `MyCoolProjectStaging`            |
+    | `Project`               | `My Cool Project`                 |
+    | `Author`                | `Mad Scientists`                  |
+    | `Organization`          | `Acme Corp`                       |
+    | `Contact`               | `mad.scientists@acme.example.com` |
 
 <br/>
 

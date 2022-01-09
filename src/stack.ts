@@ -10,6 +10,7 @@ function decideTerminationProtection(environmentType?: string): boolean {
   return /^(staging|production)$/.test(environmentType);
 }
 
+// TODO PASCAL CASE
 function decideStackName(baseName: string, projectName: string, account: string | undefined, environment: string | undefined): string {
   if (typeof environment !== 'undefined' && environment !== '') {
     return `${projectName}-Environment-${environment}-${pascalCase(baseName)}`;
