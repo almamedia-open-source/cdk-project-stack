@@ -27,17 +27,31 @@ const projectProps: ProjectProps = {
 
 describe('ProjectStack', () => {
 
+  test('Test environment in Dev account', () => {
+    const project = new Project({
+      ...projectProps,
+      context: {
+        account: 'dev',
+        environment: 'test',
+      },
+    });
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Environment-Test-FooBar');
+    expect(stack.terminationProtection).toBeFalsy();
+    expect(stack.account).toBe(projectProps.accounts.dev.id);
+    expect(stack.region).toBe(projectProps.defaultRegion);
+  });
+
   test('Feature environment in Dev account', () => {
     const project = new Project({
       ...projectProps,
       context: {
         account: 'dev',
-        environment: 'feature/foobar',
+        environment: 'feature/ABC-123',
       },
     });
-
-    const stack = new ProjectStack(project, 'testing-stack', { summary: 'Test Summary' });
-    expect(stack.stackName).toBe('TestProject-Environment-FeatureFoobar-TestingStack');
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Environment-FeatureAbc123-FooBar');
     expect(stack.terminationProtection).toBeFalsy();
     expect(stack.account).toBe(projectProps.accounts.dev.id);
     expect(stack.region).toBe(projectProps.defaultRegion);
@@ -51,9 +65,8 @@ describe('ProjectStack', () => {
         environment: 'staging',
       },
     });
-
-    const stack = new ProjectStack(project, 'testing-stack', { summary: 'Test Summary' });
-    expect(stack.stackName).toBe('TestProject-Environment-Staging-TestingStack');
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Environment-Staging-FooBar');
     expect(stack.terminationProtection).toBeTruthy();
     expect(stack.account).toBe(projectProps.accounts.dev.id);
     expect(stack.region).toBe(projectProps.defaultRegion);
@@ -67,11 +80,53 @@ describe('ProjectStack', () => {
         environment: 'production',
       },
     });
-
-    const stack = new ProjectStack(project, 'testing-stack', { summary: 'Test Summary' });
-    expect(stack.stackName).toBe('TestProject-Environment-Production-TestingStack');
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Environment-Production-FooBar');
     expect(stack.terminationProtection).toBeTruthy();
     expect(stack.account).toBe(projectProps.accounts.prod.id);
     expect(stack.region).toBe(projectProps.defaultRegion);
   });
+
+  test('Dev account', () => {
+    const project = new Project({
+      ...projectProps,
+      context: {
+        account: 'dev',
+      },
+    });
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Account-FooBar');
+    expect(stack.terminationProtection).toBeTruthy();
+    expect(stack.account).toBe(projectProps.accounts.dev.id);
+    expect(stack.region).toBe(projectProps.defaultRegion);
+  });
+
+  test('Prod account', () => {
+    const project = new Project({
+      ...projectProps,
+      context: {
+        account: 'prod',
+      },
+    });
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
+    expect(stack.stackName).toBe('TestProject-Account-FooBar');
+    expect(stack.terminationProtection).toBeTruthy();
+    expect(stack.account).toBe(projectProps.accounts.prod.id);
+    expect(stack.region).toBe(projectProps.defaultRegion);
+  });
+
+  test('No account', () => {
+    const project = new Project({
+      ...projectProps,
+    });
+    const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary', env: { account: '000000000000' } });
+    expect(stack.stackName).toBe('TestProject-FooBar');
+    expect(stack.terminationProtection).toBeTruthy();
+    expect(stack.account).toBe('000000000000');
+    expect(stack.region).toBe(projectProps.defaultRegion);
+  });
 });
+
+// TODO add tests for description
+
+// TODO add tests for tags
