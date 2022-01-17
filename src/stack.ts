@@ -14,7 +14,7 @@ function decideTerminationProtection(environmentType?: string): boolean {
 
 function decideStackName(baseName: string, projectName: string, account: string | undefined, environment: string | undefined): string {
   if (typeof environment === 'string' && environment !== '') {
-    return `${pascalCase(projectName)}-Environment-${pascalCase(environment)}-${pascalCase(baseName)}`;
+    return `${pascalCase(projectName)}-Environment-${pascalCase(environment).replace('_', '')}-${pascalCase(baseName)}`;
   }
 
   if (typeof account === 'string' && account !== '') {
