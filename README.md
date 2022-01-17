@@ -7,7 +7,7 @@
 
 Simplifies stack creation:
 ```ts
-new MyStack(project, 'MyExampleStack'); // extends ProjectStack, see "usage"
+new MyStack(project, 'MyExampleStack', { summary: 'This is required' }); // extends ProjectStack, see "usage"
 ```
 
 …by automatically setting Stack:
@@ -100,7 +100,7 @@ _Breaking changes may occur at any given time without prior warning before first
 
 3. Import and initialize your stack:
     ```ts
-    new MyStack(project, 'MyExampleStack');
+    new MyStack(project, 'MyExampleStack', { summary: 'This is required' });
     ```
 
 4. Run CDK commands with (optional) `environment-type` (or shorthand: `environment` or `env`) CLI context flag, for example:
@@ -135,9 +135,9 @@ _Breaking changes may occur at any given time without prior warning before first
 
 You may always override these values by passing in [regular CDK `StackProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.StackProps.html); But, by default this construct aims to provide sensible defaults – making splitting CDK application into multiple stacks easier as you don't have to remember to specify all of these values for all the stacks.
 
-Considering the example stack with no `StackProps`:
+Considering the example stack with no `StackProps` (other than required description):
 ```ts
-new MyStack(project, 'MyExampleStack');
+new MyStack(project, 'MyExampleStack', { description: 'This is required' });
 ```
 
 ### Stack Name
@@ -189,6 +189,7 @@ Account ID is resolved by [`@almamedia-open-source/cdk-project-context`](https:/
 If Runtime Context via CLI `--context account=key` not provided, you must specify account ID yourself into `StackProps`:
 ```ts
 new MyStack(project, 'MyExampleStack', {
+  summary: 'This is required',
   env: {
     account: '123456789012',
   },

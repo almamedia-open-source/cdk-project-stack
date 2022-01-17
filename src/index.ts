@@ -1,1 +1,1 @@
-export { ProjectStack } from './stack';
+export { ProjectStack, ProjectStackProps } from './stack';

@@ -10,22 +10,42 @@ function decideTerminationProtection(environmentType?: string): boolean {
   return /^(staging|production)$/.test(environmentType);
 }
 
-// TODO PASCAL CASE
 function decideStackName(baseName: string, projectName: string, account: string | undefined, environment: string | undefined): string {
-  if (typeof environment !== 'undefined' && environment !== '') {
-    return `${projectName}-Environment-${environment}-${pascalCase(baseName)}`;
+  if (typeof environment === 'string' && environment !== '') {
+    return `${pascalCase(projectName)}-Environment-${environment}-${pascalCase(baseName)}`;
   }
 
-  if (typeof account !== 'undefined' && account !== '') {
-    return `${projectName}-Account-${pascalCase(baseName)}`;
+  if (typeof account === 'string' && account !== '') {
+    return `${pascalCase(projectName)}-Account-${pascalCase(baseName)}`;
   }
 
-  return `${projectName}-${pascalCase(baseName)}`;
+  return `${pascalCase(projectName)}-${pascalCase(baseName)}`;
 }
 
+function decideDescription(summary: string, account: string | undefined, environment: string | undefined) {
+  let prefix = '';
+
+  if (typeof environment === 'string' && environment !== '') {
+    prefix = `${pascalCase(environment)} Environment: `;
+  } else if (typeof account === 'string' && account !== '') {
+    prefix = `${pascalCase(account)} Account: `;
+  } else {
+    prefix = '';
+  }
+
+  return `${prefix}${summary}`;
+}
+
+export interface ProjectStackProps extends StackProps {
+  readonly summary: string;
+}
 
 export class ProjectStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: ProjectStackProps) {
+
+    if (typeof props.description === 'string') {
+      throw new Error('Do not set description, instead provide summary');
+    }
 
     const accountId = props?.env?.account || ProjectContext.getAccountId(scope);
     const region = props?.env?.region || ProjectContext.getDefaultRegion(scope);
@@ -35,14 +55,14 @@ export class ProjectStack extends Stack {
 
 
     const stackName = decideStackName(id, projectName, accountType, environmentType);
-    const description = 'TODO'; // https://github.com/almamedia/alma-cdk-jsii-accounts-and-environments/blob/master/src/stack/props.ts#L77
+    const description = decideDescription(props.summary, accountType, environmentType);
     const terminationProtection = decideTerminationProtection(environmentType);
 
     super(scope, id, {
       ...props,
       stackName: props?.stackName || stackName,
       terminationProtection: props?.terminationProtection || terminationProtection,
-      description: props?.description || description,
+      description: description,
       env: {
         ...env,
         account: accountId,
