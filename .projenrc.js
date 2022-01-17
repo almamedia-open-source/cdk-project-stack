@@ -10,6 +10,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorOrganization: true,
   authorAddress: 'opensource@almamedia.dev',
   name: '@almamedia-open-source/cdk-project-stack',
+  description: 'Opinionated AWS CDK construct to define CloudFormation Stacks with sensible defaults',
   repositoryUrl: 'https://github.com/almamedia-open-source/cdk-project-stack.git',
   keywords: ['cdk', 'aws-cdk', 'awscdk', 'aws'],
 
