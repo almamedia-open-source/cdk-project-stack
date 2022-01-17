@@ -12,6 +12,7 @@ function decideTerminationProtection(environmentType?: string): boolean {
   return /^(staging|production)$/.test(environmentType);
 }
 
+// TODO max length 128
 function decideStackName(baseName: string, projectName: string, account: string | undefined, environment: string | undefined): string {
   if (typeof environment === 'string' && environment !== '') {
     return `${pascalCase(projectName)}-Environment-${pascalCase(environment).replace('_', '')}-${pascalCase(baseName)}`;
