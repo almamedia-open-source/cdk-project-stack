@@ -4,6 +4,8 @@ import { Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { capitalCase, pascalCase } from 'change-case';
 import { Construct } from 'constructs';
 
+// TODO THIS CODE IS HORRIBLE, REFACTOR ONCE API/FEATURES AGREED UPON!
+
 
 function decideTerminationProtection(environmentType?: string): boolean {
   if (typeof environmentType === 'undefined') return true; // "account stack"
@@ -12,7 +14,7 @@ function decideTerminationProtection(environmentType?: string): boolean {
 
 function decideStackName(baseName: string, projectName: string, account: string | undefined, environment: string | undefined): string {
   if (typeof environment === 'string' && environment !== '') {
-    return `${pascalCase(projectName)}-Environment-${environment}-${pascalCase(baseName)}`;
+    return `${pascalCase(projectName)}-Environment-${pascalCase(environment)}-${pascalCase(baseName)}`;
   }
 
   if (typeof account === 'string' && account !== '') {
