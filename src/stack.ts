@@ -89,8 +89,10 @@ function tagIt(scope: Construct) {
 
   const useLegacyStacks = scope.node.tryGetContext('@almamedia-open-source/cdk-project-stack:legacyTags') === true;
 
+  if (typeof accountType === 'string') {
+    tags.add('Account', accountType);
+  }
 
-  tags.add('Account', accountType);
   if (typeof environmentType === 'string') {
     tags.add('Environment', environmentType);
     if (useLegacyStacks) {
