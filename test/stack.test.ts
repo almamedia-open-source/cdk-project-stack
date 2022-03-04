@@ -12,12 +12,14 @@ const projectProps: ProjectProps = {
   accounts: {
     dev: {
       id: '111111111111',
+      environments: ['development', 'feature/.*', 'test', 'staging'],
       config: {
         baseDomain: 'example.net',
       },
     },
     prod: {
       id: '222222222222',
+      environments: ['production'],
       config: {
         baseDomain: 'example.com',
       },
@@ -96,9 +98,9 @@ describe('ProjectStack', () => {
     });
     const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
     expect(stack.stackName).toBe('TestProject-Account-FooBar');
-    expect(stack.terminationProtection).toBeTruthy();
     expect(stack.account).toBe(projectProps.accounts.dev.id);
     expect(stack.region).toBe(projectProps.defaultRegion);
+    expect(stack.terminationProtection).toBeTruthy();
   });
 
   test('Prod account', () => {
@@ -110,9 +112,9 @@ describe('ProjectStack', () => {
     });
     const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary' });
     expect(stack.stackName).toBe('TestProject-Account-FooBar');
-    expect(stack.terminationProtection).toBeTruthy();
     expect(stack.account).toBe(projectProps.accounts.prod.id);
     expect(stack.region).toBe(projectProps.defaultRegion);
+    expect(stack.terminationProtection).toBeTruthy();
   });
 
   test('No account', () => {
@@ -121,9 +123,9 @@ describe('ProjectStack', () => {
     });
     const stack = new ProjectStack(project, 'FooBar', { summary: 'Test Summary', env: { account: '000000000000' } });
     expect(stack.stackName).toBe('TestProject-FooBar');
-    expect(stack.terminationProtection).toBeTruthy();
     expect(stack.account).toBe('000000000000');
     expect(stack.region).toBe(projectProps.defaultRegion);
+    expect(stack.terminationProtection).toBeTruthy();
   });
 });
 

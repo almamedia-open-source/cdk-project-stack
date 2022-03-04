@@ -22,8 +22,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   minNodeVersion: nodejsVersion,
   cdkVersion: '2.0.0',
   constructsVersion: '10.0.0',
-  peerDeps: ['constructs', 'aws-cdk-lib', '@almamedia-open-source/cdk-project-context@v0.0.11'],
-  devDeps: ['constructs', 'aws-cdk-lib', '@almamedia-open-source/cdk-project-context@v0.0.11'],
+  peerDeps: ['constructs', 'aws-cdk-lib', '@almamedia-open-source/cdk-project-context@v0.0.18'],
+  devDeps: ['constructs', 'aws-cdk-lib', '@almamedia-open-source/cdk-project-context@v0.0.18'],
   bundledDeps: ['change-case'],
 
   // Gitignore

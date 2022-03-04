@@ -8,7 +8,7 @@ import { Construct } from 'constructs';
 
 
 function decideTerminationProtection(environmentType?: string): boolean {
-  if (typeof environmentType === 'undefined') return true; // "account stack"
+  if (typeof environmentType === 'undefined' || environmentType === '') return true; // "account stack"
   return /^(staging|production)$/.test(environmentType);
 }
 
@@ -53,7 +53,7 @@ export class ProjectStack extends Stack {
     const accountId = props?.env?.account || ProjectContext.getAccountId(scope);
     const region = props?.env?.region || ProjectContext.getDefaultRegion(scope);
     const accountType = ProjectContext.getAccountType(scope);
-    const environmentType = ProjectContext.tryGetEnvironment(scope);
+    const environmentType = ProjectContext.tryGetEnvironment(scope) || '';
     const projectName = ProjectContext.getName(scope);
 
 
